@@ -448,6 +448,11 @@ public class OAuthWebviewHelper implements KeyChainAliasCallback {
 
 		@Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (url.contains("otpauth://")) {
+                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                getContext().startActivity(intent);
+                return true;
+            }
 			boolean isDone = url.replace("///", "/").toLowerCase(Locale.US).startsWith(loginOptions.getOauthCallbackUrl().replace("///", "/").toLowerCase(Locale.US));
             if (isDone) {
                 Uri callbackUri = Uri.parse(url);
