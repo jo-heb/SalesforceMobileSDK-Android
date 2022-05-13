@@ -449,9 +449,13 @@ public class OAuthWebviewHelper implements KeyChainAliasCallback {
 		@Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.contains("otpauth://") || url.startsWith("https://play.google.com/")) {
-                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                getContext().startActivity(intent);
-                return true;
+                try {
+                    final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    getContext().startActivity(intent);
+                    return true;
+                } catch (ActivityNotFoundException e) {
+                    // nothing useful we can do here other than let the webview try and load the url
+                }
             }
 			boolean isDone = url.replace("///", "/").toLowerCase(Locale.US).startsWith(loginOptions.getOauthCallbackUrl().replace("///", "/").toLowerCase(Locale.US));
             if (isDone) {
