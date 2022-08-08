@@ -6,6 +6,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 dependencies {
     api project(':libs:SalesforceAnalytics')
@@ -68,12 +69,46 @@ android {
 
 }
 
+publishing {
+    publications {
+        bar(MavenPublication) {
+            groupId 'com.salesforce'
+            artifactId 'SalesforceSDK'
+            version '10.0.0'
+            artifact("$buildDir/outputs/aar/SalesforceSDK-release.aar")
+
+            pom.withXml {
+                def dependencies = asNode().appendNode('dependencies')
+                configurations.api.allDependencies.each {
+                    def dependency = dependencies.appendNode('dependency')
+                    dependency.appendNode('groupId', it.group)
+                    dependency.appendNode('artifactId', it.name)
+                    dependency.appendNode('version', it.version)
+                }
+            }
+
+
+        }
+
+
+    }
+    repositories {
+        maven {
+            url "https://gitlab.com/api/v4/projects/18109833/packages/maven"
+            credentials(HttpHeaderCredentials) {
+                name = "Deploy-Token"
+                value = "Ad3fHSfDLyoFVmx4Lp5w" // the token is stored in ~/.gradle/gradle.properties
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
+    }
+}
+
 ext {
     PUBLISH_GROUP_ID = 'com.salesforce.mobilesdk'
     PUBLISH_VERSION = '10.0.0'
     PUBLISH_ARTIFACT_ID = 'SalesforceSDK'
 }
 
-if (rootProject.name == 'SalesforceMobileSDK-Android') {
-    apply from: "${rootProject.projectDir}/publish/publish-module.gradle"
-}
