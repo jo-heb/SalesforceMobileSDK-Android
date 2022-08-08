@@ -3,6 +3,11 @@ apply plugin: 'maven-publish'
 apply from: "${rootDir}/publish/publish-root.gradle"
 
 
+//def properties = new Properties()
+//file("partnernet-certs/Google/gradle.properties").withInputStream{properties.load(it)}
+//
+//def deployToken = properties.getProperty("GITLAB_DEPLOYEMENT_TOKEN")
+
 buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
