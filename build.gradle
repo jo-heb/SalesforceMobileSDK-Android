@@ -3,11 +3,6 @@ apply plugin: 'maven-publish'
 apply from: "${rootDir}/publish/publish-root.gradle"
 
 
-//def properties = new Properties()
-//file("partnernet-certs/Google/gradle.properties").withInputStream{properties.load(it)}
-//
-//def deployToken = properties.getProperty("GITLAB_DEPLOYEMENT_TOKEN")
-
 buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
@@ -21,28 +16,19 @@ buildscript {
     }
 }
 
-publishing {
-    publications {
-        bar(MavenPublication) {
-            groupId 'com.salesforce'
-            artifactId 'SalesforceSDK'
-            version '10.0.0'
-            artifact("$buildDir/libs/SalesforceMobileSDK-Android-10.0.0.jar")
-        }
-    }
-    repositories {
-        maven {
-            url "https://gitlab.com/api/v4/projects/18109833/packages/maven"
-            credentials(HttpHeaderCredentials) {
-                name = "Deploy-Token"
-                value = "Ad3fHSfDLyoFVmx4Lp5w" // the token is stored in ~/.gradle/gradle.properties
-            }
-            authentication {
-                header(HttpHeaderAuthentication)
-            }
-        }
-    }
+def properties = new Properties()
+file("partnernet-certs/Google/gradle.properties").withInputStream{properties.load(it)}
+
+
+ext {
+    deployToken = properties.getProperty("GITLAB_DEPLOYEMENT_TOKEN")
+    sdkVersion = project.property("version")
 }
+gradle.projectsEvaluated {
+    task publishToRepository(dependsOn: [project(":libs:SalesforceAnalytics").publish,
+                                         project(":libs:SalesforceSDK").publish])
+}
+
 
 allprojects {
     group = 'com.salesforce.mobilesdk'
