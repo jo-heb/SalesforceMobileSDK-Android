@@ -1,6 +1,3 @@
 [submodule "external/shared"]
 	path = external/shared
     url = https://github.com/forcedotcom/SalesforceMobileSDK-Shared.git
-[submodule "partnernet-certs"]
-	path = partnernet-certs
-	url = https://gitlab.com/partnernet-mobile-security/partnernet-certs.git
