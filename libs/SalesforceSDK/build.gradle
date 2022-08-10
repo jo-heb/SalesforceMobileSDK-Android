@@ -74,7 +74,7 @@ publishing {
         bar(MavenPublication) {
             groupId 'com.salesforce'
             artifactId 'SalesforceSDK'
-            version project.sdkVersion
+            version '10.0.0'
             artifact("$buildDir/outputs/aar/SalesforceSDK-release.aar")
 
             pom.withXml {
@@ -97,7 +97,7 @@ publishing {
             url "https://gitlab.com/api/v4/projects/18109833/packages/maven"
             credentials(HttpHeaderCredentials) {
                 name = "Deploy-Token"
-                value = "${project.deployToken}" // the token is stored in ~/.gradle/gradle.properties
+                value = "Ad3fHSfDLyoFVmx4Lp5w" // the token is stored in ~/.gradle/gradle.properties
             }
             authentication {
                 header(HttpHeaderAuthentication)
