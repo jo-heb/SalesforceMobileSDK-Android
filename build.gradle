@@ -1,4 +1,5 @@
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
+apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply from: "${rootDir}/publish/publish-root.gradle"
 
@@ -18,11 +19,8 @@ buildscript {
 
 publishing {
     publications {
-        bar(MavenPublication) {
-            groupId 'com.salesforce'
-            artifactId 'SalesforceSDK'
-            version '10.0.0'
-            artifact("$buildDir/libs/SalesforceMobileSDK-Android-10.0.0.jar")
+        library(MavenPublication) {
+            from components.java
         }
     }
     repositories {
