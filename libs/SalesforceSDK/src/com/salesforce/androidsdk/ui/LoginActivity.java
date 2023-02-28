@@ -230,7 +230,8 @@ public class LoginActivity extends AccountAuthenticatorActivity
 
 	protected OAuthWebviewHelper getOAuthWebviewHelper(OAuthWebviewHelperEvents callback,
 			LoginOptions loginOptions, WebView webView, Bundle savedInstanceState) {
-		return new OAuthWebviewHelper(this, callback, loginOptions, webView, savedInstanceState);
+        // HEB: Attempt to fix login loop errors by setting shouldReloadPage to false
+		return new OAuthWebviewHelper(this, callback, loginOptions, webView, savedInstanceState, false);
 	}
 
 	@Override
