@@ -41,12 +41,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.installations.FirebaseInstallations;
 import com.salesforce.androidsdk.accounts.UserAccount;
 import com.salesforce.androidsdk.config.BootConfig;
 import com.salesforce.androidsdk.util.SalesforceSDKLogger;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -127,18 +126,8 @@ public class PushMessaging {
             if (isLastAccount) {
                 initializeFirebaseIfNeeded(context);
                 String appName = getAppNameForFirebase(context);
-                final FirebaseInstanceId instanceID = FirebaseInstanceId.getInstance(FirebaseApp.getInstance(appName));
-                threadPool.execute(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            instanceID.deleteInstanceId();
-                        } catch (IOException e) {
-                            SalesforceSDKLogger.e(TAG, "Error deleting InstanceID", e);
-                        }
-                    }
-                });
+                final FirebaseInstallations instanceID = FirebaseInstallations.getInstance(FirebaseApp.getInstance(appName));
+                threadPool.execute(instanceID::delete);
             }
             unregisterSFDCPush(context, account);
         }

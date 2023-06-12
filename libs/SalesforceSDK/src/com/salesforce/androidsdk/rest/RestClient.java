@@ -80,7 +80,7 @@ public class RestClient {
 
 	/**
 	 * AuthTokenProvider interface.
-	 * RestClient will call its authTokenProvider to refresh its authToken once it has expired. 
+	 * RestClient will call its authTokenProvider to refresh its authToken once it has expired.
 	 */
 	public interface AuthTokenProvider {
 		String getInstanceUrl();
@@ -88,7 +88,7 @@ public class RestClient {
 		String getRefreshToken();
 		long getLastRefreshTime();
 	}
-	
+
 	/**
 	 * AsyncRequestCallback interface.
 	 * Interface through which the result of an asynchronous request is handled.
@@ -123,7 +123,7 @@ public class RestClient {
 		 */
 		void onError(Exception exception);
 	}
-	
+
     /**
      * Constructs a RestClient with the given clientInfo, authToken, httpAccessor and authTokenProvider.
      * When it gets a 401 (not authorized) response from the server:
@@ -275,14 +275,14 @@ public class RestClient {
 	public synchronized String getAuthToken() {
 		return oAuthRefreshInterceptor.getAuthToken();
 	}
-	
+
 	/**
 	 * @return The refresh token, if available.
 	 */
 	public String getRefreshToken() {
 		return oAuthRefreshInterceptor.getRefreshToken();
 	}
-	
+
 	/**
 	 * @return The client info.
 	 */
@@ -361,7 +361,7 @@ public class RestClient {
 	 * Note: Cannot be used by code on the UI thread (use sendAsync instead).
 	 * @param restRequest
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public RestResponse sendSync(RestRequest restRequest) throws IOException {
         Request request = buildRequest(restRequest);
