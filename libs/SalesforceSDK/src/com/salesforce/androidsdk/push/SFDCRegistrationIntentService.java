@@ -28,13 +28,12 @@ package com.salesforce.androidsdk.push;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.core.app.JobIntentService;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.salesforce.androidsdk.accounts.UserAccount;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
-import com.salesforce.androidsdk.config.BootConfig;
 import com.salesforce.androidsdk.util.SalesforceSDKLogger;
 
 /**
@@ -60,17 +59,13 @@ public class SFDCRegistrationIntentService extends JobIntentService {
              * approach works better for us.
              */
             final Context context = SalesforceSDKManager.getInstance().getAppContext();
-            String appName = PushMessaging.getAppNameForFirebase(context);
             PushMessaging.initializeFirebaseIfNeeded(context);
 
-            // Fetches an instance ID from Firebase once the initialization is complete.
-            final FirebaseInstanceId instanceID = FirebaseInstanceId.getInstance(FirebaseApp.getInstance(appName));
-            final String token = instanceID.getToken(BootConfig.getBootConfig(this).getPushNotificationClientId(), FCM);
+            final String token = FirebaseMessaging.getInstance().getToken().getResult();
             final UserAccount account = SalesforceSDKManager.getInstance().getUserAccountManager().getCurrentUser();
 
             // Store the new token.
             PushMessaging.setRegistrationId(this, token, account);
-
             // Send it to SFDC.
             PushMessaging.registerSFDCPush(this, account);
         } catch (Exception e) {
