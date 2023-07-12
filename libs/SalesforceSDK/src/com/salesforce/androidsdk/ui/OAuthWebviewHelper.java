@@ -522,7 +522,19 @@ public class OAuthWebviewHelper implements KeyChainAliasCallback {
                 return true;
             }
 
-			boolean isDone = uri.toString().replace("///", "/").toLowerCase(Locale.US).startsWith(loginOptions.getOauthCallbackUrl().replace("///", "/").toLowerCase(Locale.US));
+            // HEB PartnerNet, Handle OneLogin download and enrollment urls
+            if (uri.toString().contains("otpauth://") || uri.toString().startsWith("https://play.google.com/")) {
+                try {
+                    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    getContext().startActivity(intent);
+                    return true;
+                } catch (ActivityNotFoundException e) {
+                    // nothing useful we can do here other than let the webview try and load the url
+                }
+            }
+
+            boolean isDone = uri.toString().replace("///", "/").toLowerCase(Locale.US).startsWith(loginOptions.getOauthCallbackUrl().replace("///", "/").toLowerCase(Locale.US));
+
             if (isDone) {
                 Map<String, String> params = UriFragmentParser.parse(uri);
                 String error = params.get("error");

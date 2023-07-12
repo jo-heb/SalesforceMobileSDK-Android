@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:tools="http://schemas.android.com/tools"
 	android:versionCode="80"
 	android:versionName="11.0.0">
@@ -41,10 +42,12 @@
             Launch mode of "singleInstance" ensures that the activity isn't restarted
             by a callback from Chrome custom tab when auth flow is complete. This is
             required for the Chrome custom tab auth flow to work correctly.
+
+            HEB PartnerNet: set launchMode to singleTop to fix app closing after login
         -->
         <activity android:name="com.salesforce.androidsdk.ui.LoginActivity"
             android:theme="@style/SalesforceSDK"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing"
             android:exported="true" />
